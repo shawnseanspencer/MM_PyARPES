@@ -1,0 +1,47 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2759
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;\f2\fswiss\fcharset0 Helvetica-BoldOblique;
+}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw6240\paperh12480\margl1440\margr1440\vieww11520\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\b\fs36 \cf0 \ul \ulc0 Comments:
+\f1\b0\fs30 \ulnone \
+The way that the .xy format works allows for multiple spectra inside of one .xy file. The standard PyARPES 
+\f0\b load_data
+\f1\b0  function does not support this sort of data loading (I suspect this is because most groups were using Igor .pxt files, which would split up frames from a single scan into multiple files). As such, I've written the \'91momentum_functions\'92 folder (which may or may not have extra real space analysis tools depending on when I write this) in order to allow for loading of multiple spectra from a single .xy file.\
+\
+
+\f0\b\fs36 \ul Instructions for implementing loading functions: 
+\f1\b0\fs30 \ulnone \
+1. Move the file into the /arpes/endstations/plugin folder in your given PyARPES conda environment.\
+2. Move the \'91momentum_functions\'92 folder into the folder where all the other functionalities are stored. For example, it should be in the same folder as the folders \'91arpes\'92, \'91logs\'92, and \'91docs\'92\
+	- You could also move it to PATH in the environment\
+\
+3. From here, 
+\f0\b load_data(file_path, location='MM')
+\f1\b0  should work and output data, given that it has only a single spectra. If there are multiple, the first spectra listed in the file will be loaded.\
+4. For multiple files, and to get the functionality of the different loading functions written, use 
+\f0\b from momentum_functions import *
+\f1\b0 \
+This will give you access to four main functions. Further documentation about each function and the parameters can be found by running 
+\f2\i\b function
+\f0\i0 ?
+\f1\b0  in a Jupyter notebook, or in the file loading.py\
+	- 
+\f0\b filter_meta_data
+\f1\b0 : Used mostly in 
+\f0\b load_xy
+\f1\b0  function to sort lists of strings into \{key: value\} pairs. Could possibly be useful for filtering some other form of metadata. Note that it separates strings by searching for a double space \
+	-  
+\f0\b load_xy
+\f1\b0 : loads directly from .xy file into a dictionary containing all spectra and metadata attached to each group, along with universal (file wide) metadata.\
+	- 
+\f0\b load_to_xarray
+\f1\b0 : Converts the output of 
+\f0\b load_xy
+\f1\b0  function into an xarray. Can only take the equivalent of 1 spectra none as an argument. \
+	- 
+\f0\b load_xy_data
+\f1\b0 : Goes straight from file to xarray, allows specification of group_name and trial_name, which correspond to different logical variable scans, and different spectra respectively. If none called will assume first spectra listed in input file. }
